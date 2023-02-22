@@ -1,0 +1,6 @@
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/2fd47ba9-frame4830.jpg 273,101,421,264,0
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/6153e2ef-frame6440.jpg 1033,296,1177,463,0
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/84f5969a-frame6670.jpg 1102,325,1279,559,0
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/e99bab9f-frame5865.jpg 682,123,823,303,0
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/f095b0c2-frame8250.jpg 489,285,599,409,0
+C:\Users\junio\Desktop\faster-rcnn-pytorch\VOCdevkit/VOC2007/JPEGImages/f11c9251-frame5060.jpg 258,108,403,256,0
