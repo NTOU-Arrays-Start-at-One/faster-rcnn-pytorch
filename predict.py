@@ -19,14 +19,16 @@ if __name__ == "__main__":
     #   'fps'               表示测试fps，使用的图片是img里面的street.jpg，详情查看下方注释。
     #   'dir_predict'       表示遍历文件夹进行检测并保存。默认遍历img文件夹，保存img_out文件夹，详情查看下方注释。
     #----------------------------------------------------------------------------------------------------------#
-    mode = "dir_predict"
+    mode = "predict"
     #-------------------------------------------------------------------------#
     #   crop                指定了是否在单张图片预测后对目标进行截取
     #   count               指定了是否进行目标的计数
-    #   crop、count仅在mode='predict'时有效
+    #   analyze             指定了是否分析色板的色差值 /tana
+    #   crop、count、analyze仅在mode='predict'时有效 /tana
     #-------------------------------------------------------------------------#
     crop            = False
     count           = False
+    analyze         = True
     #----------------------------------------------------------------------------------------------------------#
     #   video_path          用于指定视频的路径，当video_path=0时表示检测摄像头
     #                       想要检测视频，则设置如video_path = "xxx.mp4"即可，代表读取出根目录下的xxx.mp4文件。
@@ -76,7 +78,7 @@ if __name__ == "__main__":
                 print('Open Error! Try again!')
                 continue
             else:
-                r_image = frcnn.detect_image(image, crop = crop, count = count)
+                r_image = frcnn.detect_image(image, crop = crop, count = count, analyze = analyze) # /tana
                 r_image.show()
 
     elif mode == "video":

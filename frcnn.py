@@ -12,6 +12,7 @@ from utils.utils import (cvtColor, get_classes, get_new_img_size, resize_image,
                          preprocess_input, show_config)
 from utils.utils_bbox import DecodeBox
 
+import colorAnalysis as ca
 
 #--------------------------------------------#
 #   使用自己训练好的模型预测需要修改2个参数
@@ -52,7 +53,7 @@ class FRCNN(object):
         #   是否使用Cuda
         #   没有GPU可以设置成False
         #-------------------------------#
-        "cuda"          : True,
+        "cuda"          : torch.cuda.is_available()
     }
 
     @classmethod
@@ -110,7 +111,7 @@ class FRCNN(object):
     #---------------------------------------------------#
     #   检测图片
     #---------------------------------------------------#
-    def detect_image(self, image, crop = False, count = False):
+    def detect_image(self, image, crop = False, count = False, analyze = False):
         #---------------------------------------------------#
         #   计算输入图片的高和宽
         #---------------------------------------------------#
@@ -193,6 +194,20 @@ class FRCNN(object):
                 crop_image = image.crop([left, top, right, bottom])
                 crop_image.save(os.path.join(dir_save_path, "crop_" + str(i) + ".png"), quality=95, subsampling=0)
                 print("save crop_" + str(i) + ".png to " + dir_save_path)
+        #---------------------------------------------------------#
+        #   是否分析色板資訊
+        #---------------------------------------------------------#
+        if analyze:  # /tana
+            for i, c in list(enumerate(top_label)):
+                top, left, bottom, right = top_boxes[i]
+                top     = max(0, np.floor(top).astype('int32'))
+                left    = max(0, np.floor(left).astype('int32'))
+                bottom  = min(image.size[1], np.floor(bottom).astype('int32'))
+                right   = min(image.size[0], np.floor(right).astype('int32'))
+
+                crop_image = image.crop([left, top, right, bottom])
+                ca.colorAnalysis(crop_image)
+
         #---------------------------------------------------------#
         #   图像绘制
         #---------------------------------------------------------#
