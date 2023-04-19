@@ -94,18 +94,30 @@ def color_analysis(im):
 # 以CIE1976和CIEDE2000計算測試色塊間的色差值，用來比較色彩還原效果。
 #----------------------------------------------------#
 def get_delta_e(color1, color2):
-  # 色彩空間轉換(RGB to LAB)  
-  def rgb2lab(rgb):
-      return convert_color(sRGBColor(rgb[0], rgb[1], rgb[2]), LabColor)
+  # 色彩空間轉換(BGR to LAB)  
+  def bgr2lab(bgr):
+      return convert_color(sRGBColor(bgr[2], bgr[1], bgr[0]), LabColor)
 
   # 計算CIE1976和CIEDE2000的色差
-  delta_e_1976 = delta_e_cie1976(rgb2lab(color1), rgb2lab(color2))
-  delta_e_2000 = delta_e_cie2000(rgb2lab(color1), rgb2lab(color2))
+  delta_e_1976 = delta_e_cie1976(bgr2lab(color1), bgr2lab(color2))
+  delta_e_2000 = delta_e_cie2000(bgr2lab(color1), bgr2lab(color2))
 
   #print(f"CIE 1976色差：{delta_e_1976:.2f}")
   #print(f"CIEDE 2000色差：{delta_e_2000:.2f}")
   return delta_e_2000
 
+#----------------------------------------------------#
+# get_color_channel_diff_percent
+# 比較兩色塊間的色彩三通道差百分比，用來比較色彩還原效果。
+#----------------------------------------------------#
+def get_color_channel_diff_percent(color1, color2):
+    r1, g1, b1, a1 = color1
+    r2, g2, b2, a2 = color2
+    delta_r = abs(r2 - r1)
+    delta_g = abs(g2 - g1)
+    delta_b = abs(b2 - b1)
+    return delta_r / 255 * 100, delta_g / 255 * 100, delta_b / 255 * 100
+  
 #----------------------------------------------------#
 # get_ssim_score
 # 以structural similarity index，SSIM index計算測試色塊間的相似程度，用來比較色彩還原效果。
@@ -159,13 +171,13 @@ def correction_and_analysis(colorBoard, display = 1):
 
     plt.show()
 
-  return colorBlockVal, dc_img
+  return colorBlockVal, dc_img # colorBlockVal: 輸出色板上每色塊的代表色, dc_img: 透視校正後的圖
 
 #----------------------------------------------------#
 # compare_colorboard
-# 對兩色板做色彩比較
+# 對兩色板做色差比較
 #----------------------------------------------------#
-def compare_colorboard(a_val, b_val):
+def compare_colorboard(a_val, b_val): # 色差計算
   # 計算色差
   delta_e = []
   for i in range(0, 5):
@@ -206,3 +218,45 @@ def compare_colorboard(a_val, b_val):
 
   delta_e_copy = delta_e.copy()
   return delta_e_copy
+
+#----------------------------------------------------#
+# color_diff_colorboard
+# 對兩色板做色彩通道比較
+#----------------------------------------------------#
+def color_diff_colorboard(a_val, b_val):
+  # 計算通道差異
+  diff = []
+  for i in range(0, 5):
+    row = []
+    for j in range(0, 5):
+      row.append(get_color_channel_diff_percent(a_val[i][j],b_val[i][j]))
+    diff.append(row)
+
+  # 代表顏色的表格輸出
+  fig, ax = plt.subplots()
+  ax.axis('off')
+  # 設置單元格文本和顏色
+  cell_text = []
+  for i in range(5):
+      row_text = []
+      row_colors = []
+      for j in range(5):
+          # 將RGB顏色塊和像素值一起顯示
+          cell_val = f"({i},{j})\n\n{diff[i][j][0]:.1f}%\n{diff[i][j][1]:.1f}%\n{diff[i][j][2]:.1f}%"
+          row_text.append(cell_val)
+      cell_text.append(row_text)
+  # 創建表格
+  table = ax.table(cellText=cell_text, cellLoc='center', bbox=[0,0,1,1])
+  # 設置表格標題
+  ax.set_title('colorBlockVal')
+  # 設置表格大小和字體大小
+  table.auto_set_font_size(False)
+  table.set_fontsize(14)
+  table.scale(1, 2)
+  # 設置圖形大小
+  fig.set_figwidth(8)
+  fig.set_figheight(8)
+  plt.show()
+
+  diff_copy = diff.copy()
+  return diff_copy
