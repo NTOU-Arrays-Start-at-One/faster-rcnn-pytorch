@@ -51,9 +51,9 @@ def colorAnalysis(crop_image):
     plt.show() # 將兩張圖一同顯示
 
     # 造出色彩通道比較圖
-    diff_1 = cba.color_diff(standard_val, restored_val) # 造出色差比較圖
-    fio.save_image_file('diff_1', result_dir) # 儲存色差比較圖
-    fio.save_text_file(diff_1, 'diff_1', result_dir) # 儲存excel文字紀錄
+    diff_1 = cba.color_diff_colorboard(standard_val, restored_val) # 造出色差比較圖
+    # fio.save_image_file('diff_1', result_dir) # 儲存色差比較圖
+    # fio.save_text_file(diff_1, 'diff_1', result_dir) # 儲存excel文字紀錄
     plt.show() # 將兩張圖一同顯示
 
     #-------------------------------------------------------------------------#
@@ -94,7 +94,7 @@ def colorAnalysis(crop_image):
     plt.show()
 
     #-------------------------------------------------------------------------#
-
+    # 顯示兩色版的差異
+    #-------------------------------------------------------------------------#
     # 顯示圖片差異介面
-    gui = ImageCompareGUI(standard_unwarp, restored_unwarp)
-    gui.run()
+    GUI.imageCompare(standard_unwarp, restored_unwarp)
