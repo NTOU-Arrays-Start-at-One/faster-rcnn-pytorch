@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors # 表格顏色
 import cba  # cba: ColorBlock Analysis
 import fileio as fio # to save file
+import GUI # GUI: Graphical User Interface to show image
 
 def colorAnalysis(crop_image):
 
@@ -43,12 +44,21 @@ def colorAnalysis(crop_image):
     fio.save_image_file('delta_e_1_unwarp_restored_model', result_dir)
 
     # 測試與比較
+    # 造出色差比較圖
     delta_e_1 = cba.compare_colorboard(standard_val, restored_val) # 造出色差比較圖
     fio.save_image_file('delta_e_1', result_dir) # 儲存色差比較圖
     fio.save_text_file(delta_e_1, 'delta_e_1', result_dir) # 儲存excel文字紀錄
     plt.show() # 將兩張圖一同顯示
 
-    #-----------
+    # 造出色彩通道比較圖
+    diff_1 = cba.color_diff(standard_val, restored_val) # 造出色差比較圖
+    fio.save_image_file('diff_1', result_dir) # 儲存色差比較圖
+    fio.save_text_file(diff_1, 'diff_1', result_dir) # 儲存excel文字紀錄
+    plt.show() # 將兩張圖一同顯示
+
+    #-------------------------------------------------------------------------#
+    # 顯示兩色版的差異
+    #-------------------------------------------------------------------------#
     # 顯示
     f, (ax1, ax3) = plt.subplots(1, 2, figsize=(12, 4))
     ax1.imshow(cv2.cvtColor(standard_unwarp, cv2.COLOR_BGR2RGB))
@@ -82,3 +92,9 @@ def colorAnalysis(crop_image):
 
     fio.save_image_file('Histogram of delta_e', result_dir)
     plt.show()
+
+    #-------------------------------------------------------------------------#
+
+    # 顯示圖片差異介面
+    gui = ImageCompareGUI(standard_unwarp, restored_unwarp)
+    gui.run()

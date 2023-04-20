@@ -93,6 +93,13 @@ def perspective_correction(im, rect_point, display = 1):
   #   if(i==4): print()
   #   print(rect_point[i], end='')
   
+  # bug: 可能會因為點的順序錯誤導致透視校正有問題
+  # fixed：讓座標能夠(左上，右上，左下，右下)
+  rect_point = sorted(rect_point, key=lambda x: x[0])
+  rect_point = sorted(rect_point, key=lambda x: x[1])
+  rect_point = sorted(rect_point, key=lambda x: x[0], reverse=True)
+  rect_point = sorted(rect_point, key=lambda x: x[1], reverse=True)
+
   # 座標(左上，右上，左下，右下)
   src = np.float32([(rect_point[1]),
           (rect_point[0]),
