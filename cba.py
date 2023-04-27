@@ -196,7 +196,7 @@ def compare_colorboard(a_val, b_val): # 色差計算
   for i in range(5):
       row = []
       for j in range(5):
-          row.append(f"({j},{i}),{delta_e[j][i]:.3f}")
+          row.append(f"({i},{j}),{delta_e[i][j]:.3f}")
       cell_text.append(row)
   
   # 繪製表格並設定顏色
