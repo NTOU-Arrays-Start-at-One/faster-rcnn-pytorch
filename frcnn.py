@@ -12,7 +12,7 @@ from utils.utils import (cvtColor, get_classes, get_new_img_size, resize_image,
                          preprocess_input, show_config)
 from utils.utils_bbox import DecodeBox
 
-import colorAnalysis as ca
+from ColorAnalysis import colorAnalysis as ca
 
 #--------------------------------------------#
 #   使用自己训练好的模型预测需要修改2个参数
