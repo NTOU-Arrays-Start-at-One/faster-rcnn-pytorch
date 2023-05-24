@@ -3,9 +3,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors # 表格顏色
-import cba  # cba: ColorBlock Analysis
-import fileio as fio # to save file
-import GUI # GUI: Graphical User Interface to show image
+from ColorAnalysis import cba  # cba: ColorBlock Analysis
+from ColorAnalysis import fileio as fio # to save file
+from ColorAnalysis import GUI # GUI: Graphical User Interface to show image
 
 def colorAnalysis(crop_image):
 

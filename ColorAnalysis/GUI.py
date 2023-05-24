@@ -3,12 +3,11 @@ import numpy as np
 
 merged_image = None  # 定義全域變數，防止函數內的變數被回收
 
-def imageCompare(img1, img2):
+def imageCompare(img1, img2, windows_name="Merged Image"):
     global merged_image  # 定義全域變數，防止函數內的變數被回收
 
-    # 檢查圖片大小是否一致，若不同可使用cv2.resize()函數進行調整
-    img1 = cv2.resize(img1, (500, 500))
-    img2 = cv2.resize(img2, (500, 500))
+    # 檢查圖片大小是否一致，若不同使用cv2.resize()函數將img2進行調整
+    img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
 
     # 生成一條紅色的線
     height, width, channels = img1.shape
@@ -27,7 +26,7 @@ def imageCompare(img1, img2):
     merged_image[:, line_end[0]:, :] = img2[:, line_end[0]:, :]
 
     # 顯示疊加後的圖片
-    cv2.imshow("Merged Image", merged_image)
+    cv2.imshow(windows_name, merged_image)
 
     # 滑鼠事件的回調函數
     def on_mouse(event, x, y, flags, param):
@@ -43,10 +42,13 @@ def imageCompare(img1, img2):
             # 重新畫線
             cv2.line(merged_image, line_start, line_end, line_color, thickness=line_thickness)
             # 顯示更新後的圖片
-            cv2.imshow("Merged Image", merged_image)
+            cv2.imshow(windows_name, merged_image)
 
     # 設置滑鼠事件的回調函數
-    cv2.setMouseCallback("Merged Image", on_mouse)
+    cv2.setMouseCallback(windows_name, on_mouse)
 
-    cv2.waitKey(0)
+    while True: # 確保有正常關閉視窗，否則二次使用會無法開啟視窗
+        cv2.waitKey(1)
+        if cv2.getWindowProperty(windows_name, cv2.WND_PROP_VISIBLE) < 1:
+            break
     cv2.destroyAllWindows()

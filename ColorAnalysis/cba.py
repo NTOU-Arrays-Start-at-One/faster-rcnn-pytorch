@@ -8,8 +8,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import cbe  # cbe: ColorBoard Extraction
-import fileio as fio # to save file
+from ColorAnalysis import cbe  # cbe: ColorBoard Extraction
+from ColorAnalysis import fileio as fio # to save file
 
 from skimage import io
 from skimage import transform
